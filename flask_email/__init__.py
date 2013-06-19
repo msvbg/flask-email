@@ -46,7 +46,7 @@ def get_connection(backend=None, fail_silently=False, **kwargs):
     try:
         mod_name, klass_name = path.rsplit('.', 1)
         mod = import_module(mod_name)
-    except ImportError, e:
+    except ImportError as e:
         raise Exception(('Error importing email backend module %s: "%s"'
                                     % (mod_name, e)))
     try:
@@ -104,7 +104,7 @@ def mail_admins(subject, message, fail_silently=False, connection=None,
     """Sends a message to the admins, as defined by the ADMINS setting."""
     if not app.config.get('ADMINS', None):
         return
-    mail = EmailMultiAlternatives(u'%s%s' % (app.config.get('EMAIL_SUBJECT_PREFIX', '[Flask] '), subject),
+    mail = EmailMultiAlternatives('%s%s' % (app.config.get('EMAIL_SUBJECT_PREFIX', '[Flask] '), subject),
                 message, app.config.get('SERVER_EMAIL', 'root@localhost'), [a[1] for a in app.config['ADMINS']],
                 connection=connection)
     if html_message:
@@ -117,7 +117,7 @@ def mail_managers(subject, message, fail_silently=False, connection=None,
     """Sends a message to the managers, as defined by the MANAGERS setting."""
     if not app.config.get('MANAGERS', None):
         return
-    mail = EmailMultiAlternatives(u'%s%s' % (app.config.get('EMAIL_SUBJECT_PREFIX', '[Flask] '), subject),
+    mail = EmailMultiAlternatives('%s%s' % (app.config.get('EMAIL_SUBJECT_PREFIX', '[Flask] '), subject),
                 message, app.config.get('SERVER_EMAIL', 'root@localhost'), [a[1] for a in app.config['MANAGERS']],
                 connection=connection)
     if html_message:

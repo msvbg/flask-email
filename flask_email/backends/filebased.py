@@ -20,7 +20,7 @@ class Mail(ConsoleMail):
         else:
             self.file_path = app.config.get('EMAIL_FILE_PATH', None)
         # Make sure self.file_path is a string.
-        if not isinstance(self.file_path, basestring):
+        if not isinstance(self.file_path, str):
             raise Exception('Path for saving emails is invalid: %r' % self.file_path)
         self.file_path = os.path.abspath(self.file_path)
         # Make sure that self.file_path is an directory if it exists.
@@ -30,7 +30,7 @@ class Mail(ConsoleMail):
         elif not os.path.exists(self.file_path):
             try:
                 os.makedirs(self.file_path)
-            except OSError, err:
+            except OSError as err:
                 raise Exception('Could not create directory for saving email messages: %s (%s)' % (self.file_path, err))
         # Make sure that self.file_path is writable.
         if not os.access(self.file_path, os.W_OK):

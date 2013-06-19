@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import with_statement
+
 
 from flask import Flask, current_app as app
 import flask.ext.email.backends.locmem as mail
@@ -44,12 +44,12 @@ class override_settings(object):
 
     def enable(self):
         self.option_store = {}
-        for key, value in self.options.items():
+        for key, value in list(self.options.items()):
             self.option_store[key] = app.config.get(key, None)
             app.config[key] = value
 
     def disable(self):
-        for key, value in self.option_store.items():
+        for key, value in list(self.option_store.items()):
             app.config[key] = value
         self.option_store = None
 
@@ -273,7 +273,7 @@ class BaseEmailBackendTests(object):
         """
         Regression test for Django #14301
         """
-        self.assertTrue(send_mail('Subject', 'Content', 'from@öäü.com', [u'to@öäü.com']))
+        self.assertTrue(send_mail('Subject', 'Content', 'from@öäü.com', ['to@öäü.com']))
         message = self.get_the_message()
         self.assertEqual(message.get('subject'), 'Subject')
         self.assertEqual(message.get('from'), 'from@xn--4ca9at.com')
@@ -281,7 +281,7 @@ class BaseEmailBackendTests(object):
 
         self.flush_mailbox()
         m = EmailMessage('Subject', 'Content', 'from@öäü.com',
-                     [u'to@öäü.com'], cc=[u'cc@öäü.com'])
+                     ['to@öäü.com'], cc=['cc@öäü.com'])
         m.send()
         message = self.get_the_message()
         self.assertEqual(message.get('subject'), 'Subject')

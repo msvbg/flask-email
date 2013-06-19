@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-from __future__ import with_statement
+
 
 from flask.ext.email import get_connection, send_mail
 
 from email import message_from_string
 import sys
-from StringIO import StringIO
+from io import StringIO
 from functools import wraps
 
 from . import BaseEmailBackendTests, FlaskTestCase
